@@ -1,21 +1,34 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
+// routes/web.php
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\APUController;
+use Inertia\Inertia;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/proyectos', function () {
+    $proyectos = Proyecto::all();
+    return Inertia::render('Proyectos/Index', ['proyectos' => $proyectos]);
+})->name('proyectos.index');
 
+Route::get('/proyectos/create', function () {
+    return Inertia::render('Proyectos/Form');
+})->name('proyectos.create');
 
-Route::middleware('auth')->group(function () {
-    Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
-    Route::put('/proyectos/{proyecto}', [ProyectoController::class, 'update'])->name('proyectos.update');
-    Route::delete('/proyectos/{proyecto}', [ProyectoController::class, 'destroy'])->name('proyectos.destroy');
+Route::get('/proyectos/{proyecto}/edit', function (Proyecto $proyecto) {
+    return Inertia::render('Proyectos/Form', ['proyecto' => $proyecto]);
+})->name('proyectos.edit');
 
-    Route::post('/apus', [APUController::class, 'store'])->name('apus.store');
-    Route::put('/apus/{apu}', [APUController::class, 'update'])->name('apus.update');
-    Route::delete('/apus/{apu}', [APUController::class, 'destroy'])->name('apus.destroy');
-});
+Route::get('/apus', function () {
+    $apus = APU::with('proyecto')->get();
+    return Inertia::render('APUs/Index', ['apus' => $apus]);
+})->name('apus.index');
 
-Auth::routes();
+Route::get('/apus/create', function () {
+    $proyectos = Proyecto::all();
+    return Inertia::render('APUs/Form', ['proyectos' => $proyectos]);
+})->name('apus.create');
+
+Route::get('/apus/{apu}/edit', function (APU $apu) {
+    $proyectos = Proyecto::all();
+    return Inertia::render('APUs/Form', ['apu' => $apu, 'proyectos' => $proyectos]);
+    })->name('apus.edit');  

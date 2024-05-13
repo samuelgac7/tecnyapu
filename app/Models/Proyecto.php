@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Proyecto extends Model
 {
-    protected $table = 'proyectos';
-
     protected $fillable = [
         'nombre',
-        'mandante',
+        'propietario',
         'direccion',
+        'ciudad',
         'comuna',
         'leyes_sociales_porc',
+        'impuestos_porc',
         'fecha_entrega',
-        // Agrega otros campos según tus necesidades
     ];
 
     public function apus()

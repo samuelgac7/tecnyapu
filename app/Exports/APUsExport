@@ -1,0 +1,15 @@
+<?php
+
+// app/Exports/APUsExport.php
+namespace App\Exports;
+
+use App\Models\APU;
+use Maatwebsite\Excel\Concerns\FromCollection;
+
+class APUsExport implements FromCollection
+{
+    public function collection()
+    {
+        return APU::with('proyecto')->get();
+    }
+}
