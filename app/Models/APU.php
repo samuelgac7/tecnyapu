@@ -16,8 +16,7 @@ class APU extends Model
         // Agrega otros campos según tus necesidades
     ];
 
-    public function proyecto()
-    {
-        return $this->belongsTo(Proyecto::class);
+    public function proyecto() {
+        return $this->belongsTo(Project::class);
     }
 }
